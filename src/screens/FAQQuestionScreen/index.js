@@ -3,6 +3,8 @@ import { Footer } from "../../components/commons/Footer";
 import { Menu } from "../../components/commons/Menu";
 import { cmsService } from "../../infra/cms/cmsService";
 import { Box, Text, theme } from "../../theme/components";
+import { renderNodeRule, StructuredText } from "react-datocms";
+import { isHeading } from "datocms-structured-text-utils";
 
 export async function getStaticPaths() {
   return {
@@ -28,9 +30,9 @@ export async function getStaticProps({ params }) {
   const { data } = await cmsService({
     query: contentQuery,
   });
-  console.log("dados cms", data);
   return {
     props: {
+      cmsContent: data,
       id,
       title: data.contentFaqQuestion.title,
       content: data.contentFaqQuestion.content,
@@ -38,7 +40,7 @@ export async function getStaticProps({ params }) {
   };
 }
 
-export default function FAQQuestionScreen({ title, content }) {
+export default function FAQQuestionScreen({ cmsContent }) {
   return (
     <>
       <Head>
@@ -58,8 +60,6 @@ export default function FAQQuestionScreen({ title, content }) {
       >
         <Box
           styleSheet={{
-            display: "flex",
-            gap: theme.space.x4,
             flexDirection: "column",
             width: "100%",
             maxWidth: theme.space.xcontainer_lg,
@@ -67,14 +67,24 @@ export default function FAQQuestionScreen({ title, content }) {
           }}
         >
           <Text tag="h1" variant="heading1">
-            {title}
+            {cmsContent.contentFaqQuestion.title}
           </Text>
-
-          <Box dangerouslySetInnerHTML={{ __html: content }} />
+          <StructuredText
+            data={cmsContent.contentFaqQuestion.content}
+            customMarkRules={[
+              renderNodeRule(isHeading, ({ children, key, node }) => {
+                return (
+                  <text key={key} tag={tag}>
+                    {children}
+                  </text>
+                );
+              }),
+            ]}
+          />
         </Box>
       </Box>
 
-      <Footer />
+      <Footer  description={cmsContent.globalContent.globalFooter.description}/>
     </>
   );
 }
