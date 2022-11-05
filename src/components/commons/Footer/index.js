@@ -3,7 +3,7 @@ import { Box, Text, theme } from "../../../theme/components";
 
 export function Footer() {
 
-  const description = getCMSContent().globalContent?.globalFooter?.description
+  const description = getCMSContent('globalContent.globalFooter.description')
   return (
     <Box
       tag="footer"
