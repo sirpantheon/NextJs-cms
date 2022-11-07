@@ -1,4 +1,4 @@
-export async function cmsService({ query }) {
+export async function cmsService({ query , variables }) {
   const TOKEN = process.env.DATO_TOKEN;
   const globalQuery = `
   query {
@@ -17,6 +17,7 @@ export async function cmsService({ query }) {
       },
       body: JSON.stringify({
         query,
+        variables
       }),
     }).then(async (resp) => {
       const body = await resp.json();
