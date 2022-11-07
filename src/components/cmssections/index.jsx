@@ -1,6 +1,12 @@
+import {Menu} from '../commons/Menu';
+import {Footer} from '../commons/Footer';
+import SeoBlock from './seoBlock';
+import PageHomeHerosectionRecord from './pageHomeHerosectionRecord';
+
+
 export const cmsSections = {
-  CommonSeoBlockRecord: "Bloco de SEO",
-  CommonMenuRecord: "Bloco do Menu",
-  PageHomeHerosectionRecord: "Bloco do Hero da Home",
-  CommonFooterRecord: "Bloco do Footer",
+  CommonSeoBlockRecord:(props)=> <SeoBlock {...props} />,
+  CommonMenuRecord:(props)=> <Menu {...props}/>,
+  PageHomeHerosectionRecord: PageHomeHerosectionRecord,
+  CommonFooterRecord:(props)=> <Footer {...props} />,
 };
